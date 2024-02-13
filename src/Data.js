@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 import db from './firebaseConfig';
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
@@ -7,20 +7,28 @@ import { Chart as ChartJS } from "chart.js/auto";
 
 
 function Data() {
-  const handlePushData = () => {
+  const handlePushData = async () => {
 
-    // Add data to a collection
-    db.collection('history').add({
-      // Data to push
-      key: 'value',
-      // Add more fields as needed
-    })
-    .then(() => {
-      console.log('Data pushed to Firestore successfully');
-    })
-    .catch((error) => {
-      console.error('Error pushing data to Firestore: ', error);
-    });
+    try {
+      await addDoc(collection(db, "history"), {
+        key: "value"
+      });
+    } catch(error) {
+      console.log(error);
+    }
+
+    // // Add data to a collection
+    // db.collection('history').add({
+    //   // Data to push
+    //   key: 'value',
+    //   // Add more fields as needed
+    // })
+    // .then(() => {
+    //   console.log('Data pushed to Firestore successfully');
+    // })
+    // .catch((error) => {
+    //   console.error('Error pushing data to Firestore: ', error);
+    // });
   };
 
   return (
